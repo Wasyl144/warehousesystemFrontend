@@ -22,17 +22,24 @@ import router from "./router";
 import ArgonDashboard from "./plugins/argon-dashboard";
 import "element-plus/lib/theme-chalk/index.css";
 import Axios from "axios";
+import devtools from '@vue/devtools';
+import Can from '@/mixins/can';
 
 Axios.defaults.headers["Accept"] = "Application/json";
-Axios.defaults.baseURL = "http://warehousesystem.local/api";
+Axios.defaults.baseURL = process.env.VUE_APP_API_URL;
 
 if (localStorage.getItem("token")) {
     Axios.defaults.headers["Authorization"] = "Bearer " + localStorage.getItem("token");
 }
 
+if (process.env.NODE_ENV === 'development') {
+    devtools.connect('localhost', 8098)
+}
 
 const appInstance = createApp(App);
 appInstance.use(router);
+appInstance.use(Can);
 appInstance.use(store);
+appInstance.config.devtools = true;
 appInstance.use(ArgonDashboard);
 appInstance.mount("#app");

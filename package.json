@@ -3,7 +3,7 @@
   "version": "2.0.1",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "dev": "vue-cli-service serve --mode=development",
+    "dev": "vue-cli-service serve --mode development",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
@@ -13,6 +13,7 @@
     "bootstrap-vue": "2.15.0",
     "chart.js": "2.9.4",
     "core-js": "3.6.5",
+    "dotenv": "^10.0.0",
     "element-plus": "1.0.1-beta.24",
     "google-maps": "4.3.3",
     "nouislider": "14.6.0",
@@ -28,6 +29,7 @@
     "@vue/cli-plugin-router": "4.5.10",
     "@vue/cli-service": "4.5.10",
     "@vue/compiler-sfc": "3.0.5",
+    "@vue/devtools": "^6.0.0-beta.18",
     "@vue/eslint-config-prettier": "6.0.0",
     "babel-eslint": "10.1.0",
     "babel-plugin-component": "1.1.1",

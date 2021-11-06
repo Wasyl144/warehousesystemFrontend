@@ -30,7 +30,12 @@
                 />
               </span>
               <div class="media-body ml-2 d-none d-lg-block">
-                <span class="mb-0 text-sm font-weight-bold">Jessica Jones</span>
+                <span v-if="!isLoading" class="mb-0 text-sm font-weight-bold">{{
+                  this.currentUser.username
+                }}</span>
+                <span v-else class="mb-0 text-sm font-weight-bold spinner-grow">
+                  <span class="sr-only">Loading...</span>
+                </span>
               </div>
             </div>
           </template>
@@ -64,12 +69,15 @@
   </base-nav>
 </template>
 <script>
+import {mapActions, mapGetters} from "vuex";
+
 export default {
   data() {
     return {
       activeNotifications: false,
       showMenu: false,
       searchQuery: "",
+      isLoading: true
     };
   },
   methods: {
@@ -82,11 +90,19 @@ export default {
     toggleMenu() {
       this.showMenu = !this.showMenu;
     },
-    logout() {
-      this.$store.dispatch('auth/logout').then(() => {
-        this.$router.push("/login")
-      })
-    },
+    ...mapActions({
+      logout: "auth/logout",
+      getCurrentUser: "profile/getCurrentUserData"
+    })
+  },
+  computed: {
+    ...mapGetters({
+      currentUser: "profile/currentUser"
+    })
+  },
+  async mounted() {
+    await this.getCurrentUser();
+    this.isLoading = false;
   },
 };
 </script>

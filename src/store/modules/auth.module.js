@@ -1,4 +1,5 @@
 import AuthService from "../../services/auth/auth.service";
+import routes from "@/router"
 
 const user = localStorage.getItem('token');
 const initialState = user
@@ -9,9 +10,11 @@ export const auth = {
     namespaced: true,
     state: initialState,
     actions: {
-        login({commit}, user) {
+        login({commit, dispatch}, user) {
+            dispatch("profile/getPermissions")
             return AuthService.login(user).then(user => {
                 commit('loginSuccess', user);
+                routes.push({name: "dashboard"});
                 return Promise.resolve(user);
             }, (error) => {
                 commit('loginFail', user);
@@ -21,6 +24,8 @@ export const auth = {
         logout({commit}) {
             return AuthService.logout().then(() => {
                 commit('logout');
+                routes.push({name: "login"});
+                localStorage.removeItem('permissions')
             });
         }
     },

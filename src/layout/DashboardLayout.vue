@@ -30,12 +30,13 @@
         />
         <sidebar-item
           :link="{
-            name: 'User Profile',
+            name: 'Authuser Profile',
             icon: 'ni ni-single-02 text-yellow',
             path: '/profile',
           }"
         />
         <sidebar-item
+            v-if="can('auth.register')"
           :link="{
             name: 'Tables',
             icon: 'ni ni-bullet-list-67 text-red',

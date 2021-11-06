@@ -1,95 +1,104 @@
 <template>
   <div>
-    <base-header type="gradient-success" class="pb-6 pb-8 pt-5 pt-md-8">
-      <!-- Card stats -->
-      <div class="row">
-        <div class="col-xl-3 col-lg-6">
-          <stats-card
-            title="Total traffic"
-            type="gradient-red"
-            sub-title="350,897"
-            icon="ni ni-active-40"
-            class="mb-4 mb-xl-0"
-          >
-            <template v-slot:footer>
-              <span class="text-success mr-2"
-                ><i class="fa fa-arrow-up"></i> 3.48%</span
-              >
-              <span class="text-nowrap">Since last month</span>
-            </template>
-          </stats-card>
-        </div>
-        <div class="col-xl-3 col-lg-6">
-          <stats-card
-            title="Total traffic"
-            type="gradient-orange"
-            sub-title="2,356"
-            icon="ni ni-chart-pie-35"
-            class="mb-4 mb-xl-0"
-          >
-            <template v-slot:footer>
-              <span class="text-success mr-2"
-                ><i class="fa fa-arrow-up"></i> 12.18%</span
-              >
-              <span class="text-nowrap">Since last month</span>
-            </template>
-          </stats-card>
-        </div>
-        <div class="col-xl-3 col-lg-6">
-          <stats-card
-            title="Sales"
-            type="gradient-green"
-            sub-title="924"
-            icon="ni ni-money-coins"
-            class="mb-4 mb-xl-0"
-          >
-            <template v-slot:footer>
-              <span class="text-danger mr-2"
-                ><i class="fa fa-arrow-down"></i> 5.72%</span
-              >
-              <span class="text-nowrap">Since last month</span>
-            </template>
-          </stats-card>
-        </div>
-        <div class="col-xl-3 col-lg-6">
-          <stats-card
-            title="Performance"
-            type="gradient-info"
-            sub-title="49,65%"
-            icon="ni ni-chart-bar-32"
-            class="mb-4 mb-xl-0"
-          >
-            <template v-slot:footer>
-              <span class="text-success mr-2"
-                ><i class="fa fa-arrow-up"></i> 54.8%</span
-              >
-              <span class="text-nowrap">Since last month</span>
-            </template>
-          </stats-card>
-        </div>
-      </div>
-    </base-header>
-
+    <base-header type="gradient-success" class="pb-6 pb-8 pt-5 pt-md-8"/>
     <div class="container-fluid mt--7">
       <div class="row">
         <div class="col">
-          <projects-table title="Light Table"></projects-table>
-        </div>
-      </div>
-      <div class="row mt-5">
-        <div class="col">
-          <projects-table type="dark" title="Dark Table"></projects-table>
+          <card shadow>
+            <template v-slot:header>
+              All users
+            </template>
+            <template v-slot:default>
+              <base-table
+                  v-if="!isLoading"
+                  :data="this.users"
+                  tbody-classes="list">
+                <template v-slot:columns>
+                  <th>Username</th>
+                  <th>E-mail</th>
+                  <th></th>
+                </template>
+
+                <template v-slot:default="row">
+                  <td>
+                    {{ row.item.username }}
+                  </td>
+                  <td>
+                    {{ row.item.email }}
+                  </td>
+                  <td class="text-right">
+                    <base-dropdown class="dropdown" position="right">
+                      <template v-slot:title>
+                        <a
+                            class="btn btn-sm btn-icon-only text-light"
+                            role="button"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                        >
+                          <i class="fas fa-ellipsis-v"></i>
+                        </a>
+                      </template>
+
+                      <template v-slot:default>
+                        <router-link class="dropdown-item" :to="{ name: 'showUser', params: { id: row.item.id }}" >Show profile</router-link>
+                        <a class="dropdown-item" href="#">Edit</a>
+                        <a class="dropdown-item" href="#">Delete</a>
+                      </template>
+                    </base-dropdown>
+                  </td>
+                </template>
+
+              </base-table>
+              <div v-else class="d-flex justify-content-center">
+                <div class="spinner-border text-success" role="status" style="width: 5rem; height: 5rem;">
+                  <span class="sr-only">Loading...</span>
+                </div>
+              </div>
+<!--              <div v-else class="d-flex justify-content-center">-->
+<!--                <div class="spinner-border text-success" role="status" style="width: 5rem; height: 5rem;">-->
+<!--                  <span class="sr-only">Loading...</span>-->
+<!--                </div>-->
+<!--              </div>-->
+            </template>
+          </card>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import ProjectsTable from "./Tables/ProjectsTable";
+import BaseTable from "../components/BaseTable";
+import Card from "../components/Card";
+import BaseDropdown from "../components/BaseDropdown";
+import { mapGetters, mapActions } from "vuex";
+
 export default {
   name: "tables",
   components: {
-    ProjectsTable,
+    Card,
+    BaseTable,
+    BaseDropdown,
+  },
+  data() {
+    return {
+      isLoading: true,
+    }
+  },
+  async mounted() {
+    await this.getUsers().catch(err => {
+      this.error = err.message
+    });
+    this.isLoading = false
+    console.log(this.users)
+  },
+  methods: {
+    ...mapActions({ getUsers: "users/getUsers" }),
+  },
+  computed: {
+    ...mapGetters({
+      users: "users/users",
+    })
   },
 };
 </script>

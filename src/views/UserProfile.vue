@@ -4,7 +4,7 @@
       class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
       style="
         min-height: 600px;
-        background-image: url(img/theme/profile-cover.jpg);
+        /*background-image: url(img/theme/profile-cover.jpg);*/
         background-size: cover;
         background-position: center top;
       "
@@ -15,12 +15,11 @@
       <div class="container-fluid d-flex align-items-center">
         <div class="row">
           <div class="col-lg-7 col-md-10">
-            <h1 class="display-2 text-white">Hello Jesse</h1>
+            <h1 class="display-2 text-white">Hello {{this.currentUser.username}}</h1>
             <p class="text-white mt-0 mb-5">
               This is your profile page. You can see the progress you've made
               with your work and manage your projects or assigned tasks
             </p>
-            <a href="#!" class="btn btn-info">Edit profile</a>
           </div>
         </div>
       </div>
@@ -28,80 +27,7 @@
 
     <div class="container-fluid mt--7">
       <div class="row">
-        <div class="col-xl-4 order-xl-2 mb-5 mb-xl-0">
-          <div class="card card-profile shadow">
-            <div class="row justify-content-center">
-              <div class="col-lg-3 order-lg-2">
-                <div class="card-profile-image">
-                  <a href="#">
-                    <img
-                      src="img/theme/team-4-800x800.jpg"
-                      class="rounded-circle"
-                    />
-                  </a>
-                </div>
-              </div>
-            </div>
-            <div
-              class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4"
-            >
-              <div class="d-flex justify-content-between">
-                <base-button size="sm" type="info" class="mr-4"
-                  >Connect</base-button
-                >
-                <base-button size="sm" type="default" class="float-right"
-                  >Message</base-button
-                >
-              </div>
-            </div>
-            <div class="card-body pt-0 pt-md-4">
-              <div class="row">
-                <div class="col">
-                  <div
-                    class="card-profile-stats d-flex justify-content-center mt-md-5"
-                  >
-                    <div>
-                      <span class="heading">22</span>
-                      <span class="description">Friends</span>
-                    </div>
-                    <div>
-                      <span class="heading">10</span>
-                      <span class="description">Photos</span>
-                    </div>
-                    <div>
-                      <span class="heading">89</span>
-                      <span class="description">Comments</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="text-center">
-                <h3>
-                  {{user.name}}<span class="font-weight-light">, {{user.id}}</span>
-                </h3>
-                <div class="h5 font-weight-300">
-                  <i class="ni location_pin mr-2"></i>Bucharest, Romania
-                </div>
-                <div class="h5 mt-4">
-                  <i class="ni business_briefcase-24 mr-2"></i>
-                  {{user.email}}
-                </div>
-                <div>
-                  <i class="ni education_hat mr-2"></i>University of Computer
-                  Science
-                </div>
-                <hr class="my-4" />
-                <p>
-                  Ryan — the name taken by Melbourne-raised, Brooklyn-based Nick
-                  Murphy — writes, performs and records all of his own music.
-                </p>
-                <a href="#">Show more</a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-xl-8 order-xl-1">
+        <div class="col-xl-12 order-xl-1">
           <card shadow type="secondary">
             <template v-slot:header>
               <div class="bg-white border-0">
@@ -117,7 +43,7 @@
             </template>
 
             <form>
-              <h6 class="heading-small text-muted mb-4">User information</h6>
+              <h6 class="heading-small text-muted mb-4">Authuser information</h6>
               <div class="pl-lg-4">
                 <div class="row">
                   <div class="col-lg-6">
@@ -126,7 +52,7 @@
                       label="Username"
                       placeholder="Username"
                       input-classes="form-control-alternative"
-                      v-model="model.username"
+                      v-model="this.currentUser.username"
                     />
                   </div>
                   <div class="col-lg-6">
@@ -135,7 +61,7 @@
                       label="Email address"
                       placeholder="jesse@example.com"
                       input-classes="form-control-alternative"
-                      v-model="model.email"
+                      v-model="this.currentUser.email"
                     />
                   </div>
                 </div>
@@ -229,8 +155,7 @@ A beautiful Dashboard for Bootstrap 4. It is Free and Open Source.</textarea
   </div>
 </template>
 <script>
-import axios from "axios";
-
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "user-profile",
   data() {
@@ -246,28 +171,19 @@ export default {
         zipCode: "",
         about: "",
       },
-      user: {
-        id: 0,
-        name: "",
-        email: "",
-      }
     };
   },
-  methods: {
-    async getUserInfo() {
-      axios.get('/user').then(res => {
-        console.log(res.data)
-        this.user.name = res.data.name
-        this.user.id = res.data.id
-        this.user.email = res.data.email
-      }).catch(err => {
-        console.log(err)
-      })
-    }
-  },
   mounted() {
-    this.getUserInfo();
-  }
+    this.getUser();
+  },
+  methods: {
+    ...mapActions({getUser: "profile/getCurrentUserData"})
+  },
+  computed: {
+    ...mapGetters({
+      currentUser: "profile/currentUser",
+    }),
+  },
 };
 </script>
 <style></style>
