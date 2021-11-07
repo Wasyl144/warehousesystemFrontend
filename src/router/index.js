@@ -30,6 +30,10 @@ const routes = [
                 path: "/icons",
                 name: "icons",
                 components: {default: Icons},
+                // eslint-disable-next-line no-unused-vars
+                meta: {
+                    permission: "auth.register"
+                },
             },
             {
                 path: "/maps",
@@ -83,10 +87,22 @@ const router = createRouter({
 });
 
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
+    const can = store.getters["profile/permissionCan"]
     if (to.name !== "login" && !store.state.auth.status.loggedIn)
         next({name: "login"});
-    else next();
+    else {
+        if (to.meta.permission) {
+            if (await can(to.meta.permission)) {
+                next();
+            } else {
+                next({name: "dashboard"});
+            }
+        } else {
+            next();
+        }
+    }
 });
+
 
 export default router;

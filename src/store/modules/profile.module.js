@@ -40,6 +40,21 @@ export const profile = {
     },
     getters: {
         currentUser: (state) => state.user,
+        userPermissions: (state) => state.permissions,
+        permissionCan: (state) => (permission) => {
+            return state.permissions?.includes(permission);
+        },
+        permissionCanAny: (state) => (permission) => {
+            let result = false;
+            let permissions = state.permissions;
+            permission.forEach(function (single_action) {
+                if (permissions.includes(single_action)) {
+                    console.log('tak', single_action);
+                    result = true;
+                }
+            });
+            return result;
+        },
     },
 
 
