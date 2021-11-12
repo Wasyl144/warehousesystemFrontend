@@ -24,6 +24,7 @@ import "element-plus/lib/theme-chalk/index.css";
 import Axios from "axios";
 import devtools from '@vue/devtools';
 import Can from '@/mixins/can';
+import Notifications from '@kyvg/vue3-notification'
 
 Axios.defaults.headers["Accept"] = "Application/json";
 Axios.defaults.baseURL = process.env.VUE_APP_API_URL;
@@ -42,4 +43,5 @@ appInstance.use(Can);
 appInstance.use(store);
 appInstance.config.devtools = true;
 appInstance.use(ArgonDashboard);
+appInstance.use(Notifications);
 appInstance.mount("#app");

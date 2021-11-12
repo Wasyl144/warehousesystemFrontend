@@ -43,28 +43,29 @@ export default {
     }
   },
   async mounted() {
-    await this.getUser(this.$route.params.id).catch(err => {
-      this.error = err.message
-    });
-    this.isLoading = false
+    await this.getData(this.$route.params.id);
   },
   methods: {
-    ...mapActions({getUser: "users/getUserData"})
+    ...mapActions({getUser: "users/getUserData"}),
+    async getData(id) {
+      this.isLoading = true;
+      await this.getUser(id).catch(err => {
+        this.error = err.message
+      });
+      this.isLoading = false;
+    }
   },
   computed: {
     ...mapGetters({
       user: "users/selectedUser",
     })
   },
-  watch: {
-    async $route(to, from) {
-      if (to !== from) {
-        this.isLoading = true;
-        await this.getUser(this.$route.params.id);
-        this.isLoading = false;
-      }
-    }
+  async beforeRouteUpdate (to, from, next) {
+    await this.getData(to.params.id);
+    next();
   }
+
+
 }
 </script>
 

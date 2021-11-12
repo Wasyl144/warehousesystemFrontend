@@ -41,8 +41,8 @@
                       </template>
 
                       <template v-slot:default>
-                        <router-link class="dropdown-item" :to="{ name: 'showUser', params: { id: row.item.id }}" >Show profile</router-link>
-                        <a class="dropdown-item" href="#">Edit</a>
+                        <router-link v-if="can('user.show')" class="dropdown-item" :to="{ name: 'showUser', params: { id: row.item.id }}" >Show profile</router-link>
+                        <router-link v-if="can('user.update')" class="dropdown-item" :to="{ name: 'editUser', params: { id: row.item.id }}" >Edit</router-link>
                         <a class="dropdown-item" href="#">Delete</a>
                       </template>
                     </base-dropdown>

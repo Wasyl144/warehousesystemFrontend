@@ -12,7 +12,7 @@
                 <h4>{{ user.username }}</h4>
                 <p class=" mb-1">Stanowisko</p>
                 <p class="text-muted font-size-sm">Dane adresowe</p>
-                <button class="btn btn-primary">Edit profile</button>
+                <router-link v-if="can('user.update')" class="btn btn-primary" :to="{ name: 'editUser', params: { id: user.id }}" >Edit profile</router-link>
               </div>
             </div>
           </div>

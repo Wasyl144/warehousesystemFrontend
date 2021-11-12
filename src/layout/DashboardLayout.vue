@@ -36,7 +36,6 @@
           }"
         />
         <sidebar-item
-            v-if="can('auth.register')"
           :link="{
             name: 'Tables',
             icon: 'ni ni-bullet-list-67 text-red',

@@ -14,6 +14,7 @@ import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
 
 import store from '@/store/index.js';
+import EditProfile from "../views/EditProfile";
 
 const routes = [
     {
@@ -49,11 +50,22 @@ const routes = [
                 path: "/tables",
                 name: "tables",
                 components: {default: Tables},
+                meta: {
+                    permission: 'user.index'
+                }
             },
             {
                 path: '/user/:id',
                 name: 'showUser',
-                component: Profile
+                component: Profile,
+                meta: {
+                    permission: "user.show"
+                }
+            },
+            {
+                path: '/user/edit/:id',
+                name: 'editUser',
+                component: EditProfile,
             },
         ],
     },

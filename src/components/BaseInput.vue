@@ -54,7 +54,9 @@
         :class="{ 'mt-2': hasIcon }"
         v-if="error"
       >
-        {{ error }}
+        <ul>
+          <li v-for="err in error" :key="err">{{ err }}</li>
+        </ul>
       </div>
     </slot>
   </div>
@@ -78,7 +80,7 @@ export default {
       description: "Input label (text before input)",
     },
     error: {
-      type: String,
+      type: Array,
       description: "Input error (below input)",
     },
     formClasses: {
