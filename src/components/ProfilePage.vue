@@ -9,7 +9,7 @@
                 <span class="text-lg text-white">{{ firstLetter }}</span>
               </div>
               <div class="mt-3">
-                <h4>{{ user.username }}</h4>
+                <h4>{{ user.name }}</h4>
                 <p class=" mb-1">Stanowisko</p>
                 <p class="text-muted font-size-sm">Dane adresowe</p>
                 <router-link v-if="can('user.update')" class="btn btn-primary" :to="{ name: 'editUser', params: { id: user.id }}" >Edit profile</router-link>
@@ -66,7 +66,7 @@
                 <h6 class="mb-0">Full Name</h6>
               </div>
               <div class="col-sm-9">
-                {{ user.username }}
+                {{ user.name }}
               </div>
             </div>
             <hr>
@@ -122,8 +122,7 @@ export default {
   },
   computed: {
     firstLetter : function () {
-      let data = this.user.username.charAt(0);
-      return data;
+      return this.user?.name?.charAt(0);
     }
   }
 }

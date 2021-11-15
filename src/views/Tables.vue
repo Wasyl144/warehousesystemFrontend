@@ -14,14 +14,18 @@
                   :data="this.users"
                   tbody-classes="list">
                 <template v-slot:columns>
-                  <th>Username</th>
+                  <th>Name</th>
+                  <th>Surname</th>
                   <th>E-mail</th>
                   <th></th>
                 </template>
 
                 <template v-slot:default="row">
                   <td>
-                    {{ row.item.username }}
+                    {{ row.item.name }}
+                  </td>
+                  <td>
+                    {{ row.item.surname }}
                   </td>
                   <td>
                     {{ row.item.email }}
@@ -80,24 +84,16 @@ export default {
     BaseTable,
     BaseDropdown,
   },
-  data() {
-    return {
-      isLoading: true,
-    }
-  },
   async mounted() {
-    await this.getUsers().catch(err => {
-      this.error = err.message
-    });
-    this.isLoading = false
-    console.log(this.users)
+    await this.listUsers()
   },
   methods: {
-    ...mapActions({ getUsers: "users/getUsers" }),
+    ...mapActions({ listUsers: "users/list" }),
   },
   computed: {
     ...mapGetters({
       users: "users/users",
+      isLoading: "users/isLoading"
     })
   },
 };

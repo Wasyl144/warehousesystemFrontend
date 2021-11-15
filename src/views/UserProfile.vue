@@ -15,7 +15,7 @@
       <div class="container-fluid d-flex align-items-center">
         <div class="row">
           <div class="col-lg-7 col-md-10">
-            <h1 class="display-2 text-white">Hello {{this.currentUser.username}}</h1>
+            <h1 class="display-2 text-white">Hello {{this.currentUser.name}}</h1>
             <p class="text-white mt-0 mb-5">
               This is your profile page. You can see the progress you've made
               with your work and manage your projects or assigned tasks
@@ -46,16 +46,7 @@
               <h6 class="heading-small text-muted mb-4">Authuser information</h6>
               <div class="pl-lg-4">
                 <div class="row">
-                  <div class="col-lg-6">
-                    <base-input
-                      alternative=""
-                      label="Username"
-                      placeholder="Username"
-                      input-classes="form-control-alternative"
-                      v-model="this.currentUser.username"
-                    />
-                  </div>
-                  <div class="col-lg-6">
+                  <div class="col-lg-12">
                     <base-input
                       alternative=""
                       label="Email address"
@@ -72,7 +63,7 @@
                       label="First name"
                       placeholder="First name"
                       input-classes="form-control-alternative"
-                      v-model="model.firstName"
+                      v-model="this.currentUser.name"
                     />
                   </div>
                   <div class="col-lg-6">
@@ -81,7 +72,7 @@
                       label="Last name"
                       placeholder="Last name"
                       input-classes="form-control-alternative"
-                      v-model="model.lastName"
+                      v-model="this.currentUser.surname"
                     />
                   </div>
                 </div>

@@ -31,7 +31,7 @@
               </span>
               <div class="media-body ml-2 d-none d-lg-block">
                 <span v-if="!isLoading" class="mb-0 text-sm font-weight-bold">{{
-                  this.currentUser.username
+                  this.currentUser.name
                 }}</span>
                 <span v-else class="mb-0 text-sm font-weight-bold spinner-grow">
                   <span class="sr-only">Loading...</span>

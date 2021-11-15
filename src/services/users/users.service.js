@@ -3,6 +3,7 @@ import axios from "axios";
 class UsersService {
     getUserData(id) {
         return axios.get(`/user/${id}`).then(response => {
+            console.log(response.data)
             return {
                 success: true,
                 response: response.data
@@ -11,16 +12,21 @@ class UsersService {
             return {
                 success: false,
                 errors: error.response.data
-
             }
         });
     }
 
-    getUsers() {
-        return axios.get('/users').then(response => {
+    getUsers(params) {
+        return axios.get('/users', params).then(response => {
             return {
                 success: true,
-                response: response.data
+                items: response.data.data,
+                paginator: {
+                    perPage: response.data.per_page,
+                    currentPage: response.data.current_page,
+                    from: response.data.from,
+                    to: response.data.last_page
+                },
             }
         }, error => {
             return {

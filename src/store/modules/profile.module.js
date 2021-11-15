@@ -5,7 +5,7 @@ import ProfileService from "../../services/profile/profile.service";
 export const profile = {
     namespaced: true,
     state: {
-        user: new User('', '', ''),
+        user: new User('', '', '', ''),
         permissions: [],
     },
     actions: {
@@ -28,7 +28,7 @@ export const profile = {
     },
     mutations: {
         getCurrentUserSuccessfully(state, response) {
-            state.user = new User(response.name, response.email, response.id)
+            state.user = new User(response.id, response.name, response.surname, response.email)
         },
         getCurrentUserFailed(state) {
             state.user = null

@@ -8,12 +8,7 @@
             User profile
           </template>
           <template v-slot:default>
-            <ProfilePage v-if="!isLoading && !error" :user="user"></ProfilePage>
-            <div v-else-if="!isLoading && error">
-              <div class="text-danger">
-                {{error}}
-              </div>
-            </div>
+            <ProfilePage v-if="!isLoading" :user="user"></ProfilePage>
             <div v-else-if="isLoading" class="d-flex justify-content-center">
               <div class="spinner-border text-success" role="status" style="width: 5rem; height: 5rem;">
                 <span class="sr-only">Loading...</span>
@@ -35,32 +30,23 @@ import {mapGetters, mapActions} from "vuex";
 
 export default {
   name: "Profile",
-  components: {ProfilePage, Card, BaseHeader},
-  data() {
-    return {
-      isLoading: true,
-      error: ''
-    }
-  },
+  components: { ProfilePage, Card, BaseHeader },
   async mounted() {
     await this.getData(this.$route.params.id);
   },
   methods: {
-    ...mapActions({getUser: "users/getUserData"}),
+    ...mapActions({ getUser: "users/get" }),
     async getData(id) {
-      this.isLoading = true;
-      await this.getUser(id).catch(err => {
-        this.error = err.message
-      });
-      this.isLoading = false;
-    }
+      await this.getUser(id)
+    },
   },
   computed: {
     ...mapGetters({
       user: "users/selectedUser",
+      isLoading: "users/isLoading"
     })
   },
-  async beforeRouteUpdate (to, from, next) {
+  async beforeRouteUpdate(to, from, next) {
     await this.getData(to.params.id);
     next();
   }

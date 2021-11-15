@@ -33,17 +33,7 @@
               </div>
               <div class="pl-lg-4">
                 <div class="row">
-                  <div class="col-lg-6">
-                    <base-input
-                      alternative=""
-                      label="Username"
-                      placeholder="Username"
-                      input-classes="form-control-alternative"
-                      v-model="this.user.username"
-                      v-bind:error="this.user?.errors?.errors?.name"
-                    />
-                  </div>
-                  <div class="col-lg-6">
+                  <div class="col-lg-12">
                     <base-input
                       alternative=""
                       label="Email address"
@@ -61,7 +51,8 @@
                       label="First name"
                       placeholder="First name"
                       input-classes="form-control-alternative"
-                      v-model="model.firstName"
+                      v-model="this.user.name"
+                      :error="this.user?.errors?.errors?.name"
                     />
                   </div>
                   <div class="col-lg-6">
@@ -70,7 +61,8 @@
                       label="Last name"
                       placeholder="Last name"
                       input-classes="form-control-alternative"
-                      v-model="model.lastName"
+                      v-model="this.user.surname"
+                      :error="this.user?.errors?.errors?.surname"
                     />
                   </div>
                 </div>
@@ -160,7 +152,6 @@ export default {
         zipCode: "",
         about: "",
       },
-      isLoading: true,
 
     };
   },
@@ -169,20 +160,17 @@ export default {
   },
   methods: {
     ...mapActions({
-      getUser: "users/getUserData",
-      updateUser: "users/updateUser"
+      getUser: "users/get",
+      updateUser: "users/update"
     }),
     async getData(id) {
-      this.isLoading = true;
-      await this.getUser(id).catch(err => {
-        console.log(err)
-      });
-      this.isLoading = false;
+      await this.getUser(id);
     },
   },
   computed: {
     ...mapGetters({
       user: "users/selectedUser",
+      isLoading: "users/isLoading",
     }),
   },
   created() {

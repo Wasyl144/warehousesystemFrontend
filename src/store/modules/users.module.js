@@ -1,6 +1,15 @@
 import UsersService from "@/services/users/users.service"
 import User from "@/models/user";
 import routes from "@/router";
+import { pagination } from "./pagination.module";
+
+// TODO: Refactor wszystkiego, wszedzie trzeba używać tych samych nazw metod
+// pattern:
+// list - index
+// get - show
+// create - store
+// update - update
+// delete - delete
 
 
 export const users = {
@@ -12,13 +21,20 @@ export const users = {
 
             }
         },
+        order: {},
         users: [],
+        loading: true,
+        ...pagination.state
     },
     actions: {
-        getUserData({ commit, dispatch }, payload) {
+        ...pagination.actions,
+        get({ commit, dispatch }, payload) {
+            commit("setLoading", true);
+            console.log('dupa')
             return UsersService.getUserData(payload).then(({success, response, errors}) => {
                 if (success) {
                     commit("getUserSuccessfully", response)
+                    commit("setLoading", false);
                 }
                 else {
                     dispatch("alerts/add_error", errors.message, {root: true});
@@ -27,10 +43,19 @@ export const users = {
                 }
             })
         },
-        getUsers( {commit, dispatch} ) {
-            return UsersService.getUsers().then(({success, response, errors}) => {
+        list( {commit, dispatch, state}, params ) {
+            commit("setLoading", true);
+            console.log(this.state)
+            params = {
+                per_page: state.paginator.perPage,
+                page: state.paginator.currentPage,
+                order: state.order,
+            }
+            return UsersService.getUsers(params).then(({success, items, paginator, errors}) => {
                 if (success) {
-                    commit("getUsersSuccessfully", response)
+                    commit("getUsersSuccessfully", items);
+                    commit("SET_ALL", paginator);
+                    commit("setLoading", false);
                 }
                 else {
                     dispatch("alerts/add_error", errors.message, {root: true});
@@ -41,14 +66,17 @@ export const users = {
         },
 
         // eslint-disable-next-line no-unused-vars
-        updateUser( {commit, dispatch}, payload ) {
+        update( {commit, dispatch}, payload ) {
+            commit("setLoading", true);
             // eslint-disable-next-line no-unused-vars
             return UsersService.updateUser(payload).then( ({ success, errors }) => {
                if (success) {
                    dispatch("alerts/add_success", "User updated successfully", {root: true});
+                   commit("setLoading", false);
                    routes.back();
                }
                else {
+                   commit("setLoading", false);
                    dispatch("alerts/add_error", errors.message, {root: true});
                    commit("serErrors", errors)
                }
@@ -56,8 +84,10 @@ export const users = {
         }
     },
     mutations: {
+        ...pagination.mutations,
         getUserSuccessfully(state, response) {
-            state.selectedUser = new User(response.name, response.email, response.id)
+            console.log('hello')
+            state.selectedUser = new User(response.id, response.name, response.surname, response.email)
             state.selectedUser.errors = {}
         },
         getUserFailed(state, response) {
@@ -67,7 +97,7 @@ export const users = {
         getUsersSuccessfully(state, response) {
             let temp = []
             temp = response.map((res) => {
-                return new User(res.name, res.email, res.id)
+                return new User(res.id, res.name, res.surname, res.email)
             })
             state.users = temp
         },
@@ -76,10 +106,15 @@ export const users = {
         },
         serErrors(state, response) {
             state.selectedUser.errors = response
+        },
+        setLoading(state, status) {
+            state.loading = status
         }
     },
     getters: {
+        ...pagination.getters,
         selectedUser: (state) => state.selectedUser,
         users: (state) => state.users,
+        isLoading: (state) => state.loading,
     },
 }
