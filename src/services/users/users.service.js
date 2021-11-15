@@ -17,7 +17,11 @@ class UsersService {
     }
 
     getUsers(params) {
-        return axios.get('/users', params).then(response => {
+        const options = {
+            params: params
+
+        }
+        return axios.get('/users', options).then(response => {
             return {
                 success: true,
                 items: response.data.data,
@@ -25,7 +29,8 @@ class UsersService {
                     perPage: response.data.per_page,
                     currentPage: response.data.current_page,
                     from: response.data.from,
-                    to: response.data.last_page
+                    to: response.data.last_page,
+                    page: response.data.current_page
                 },
             }
         }, error => {

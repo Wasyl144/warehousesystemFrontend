@@ -2,7 +2,7 @@ export const pagination = {
     namespaced: true,
     state: {
         paginator: {
-            perPage: 15,
+            perPage: 2,
             page: 1,
             currentPage: 1,
             from: 1,

@@ -30,7 +30,6 @@ export const users = {
         ...pagination.actions,
         get({ commit, dispatch }, payload) {
             commit("setLoading", true);
-            console.log('dupa')
             return UsersService.getUserData(payload).then(({success, response, errors}) => {
                 if (success) {
                     commit("getUserSuccessfully", response)
@@ -48,7 +47,7 @@ export const users = {
             console.log(this.state)
             params = {
                 per_page: state.paginator.perPage,
-                page: state.paginator.currentPage,
+                page: state.paginator.page,
                 order: state.order,
             }
             return UsersService.getUsers(params).then(({success, items, paginator, errors}) => {

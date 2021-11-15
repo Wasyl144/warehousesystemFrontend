@@ -64,6 +64,7 @@
 <!--                  <span class="sr-only">Loading...</span>-->
 <!--                </div>-->
 <!--              </div>-->
+              <base-pagination v-on:input="changePage($event)" :per-page="this.paginator.perPage" :page-count="this.paginator.to" :value="this.paginator.currentPage"></base-pagination>
             </template>
           </card>
         </div>
@@ -76,10 +77,12 @@ import BaseTable from "../components/BaseTable";
 import Card from "../components/Card";
 import BaseDropdown from "../components/BaseDropdown";
 import { mapGetters, mapActions } from "vuex";
+import BasePagination from "../components/BasePagination";
 
 export default {
   name: "tables",
   components: {
+    BasePagination,
     Card,
     BaseTable,
     BaseDropdown,
@@ -88,12 +91,16 @@ export default {
     await this.listUsers()
   },
   methods: {
-    ...mapActions({ listUsers: "users/list" }),
+    ...mapActions({
+      listUsers: "users/list",
+      changePage: "users/setPage",
+    }),
   },
   computed: {
     ...mapGetters({
       users: "users/users",
-      isLoading: "users/isLoading"
+      isLoading: "users/isLoading",
+      paginator: "users/paginator",
     })
   },
 };
