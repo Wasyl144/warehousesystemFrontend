@@ -66,6 +66,31 @@
                     />
                   </div>
                 </div>
+                <p class="text-warning">Be careful if you fill a password fields you will change password. </p>
+                <div class="row">
+                  <div class="col-lg-6">
+                    <base-input
+                        alternative=""
+                        type="password"
+                        label="Password"
+                        placeholder="Password"
+                        input-classes="form-control-alternative"
+                        v-model="user.password"
+                        :error="user?.errors?.password"
+                    />
+                  </div>
+                  <div class="col-lg-6">
+                    <base-input
+                        alternative=""
+                        type="password"
+                        label="Confirm password"
+                        placeholder="Confirm password"
+                        input-classes="form-control-alternative"
+                        v-model="user.password_confirmation"
+                        :error="user?.errors?.password_confirmation"
+                    />
+                  </div>
+                </div>
                 <div class="row">
                   <div class="col-lg-6">
                     <div class="form-group">

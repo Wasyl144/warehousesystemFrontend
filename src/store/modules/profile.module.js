@@ -7,7 +7,10 @@ import Role from "../../models/role";
 export const profile = {
     namespaced: true,
     state: {
-        user: new User('', '', '', '', new Additionalinfo('','',''), new Role('', '')),
+        user: {
+
+            errors: {}
+        },
         permissions: [],
         loading: true,
     },
@@ -32,6 +35,22 @@ export const profile = {
                 commit('SET_LOADING', false);
             })
         },
+        // eslint-disable-next-line no-unused-vars
+        update({commit, dispatch}, payload) {
+            commit("SET_LOADING", true);
+            // eslint-disable-next-line no-unused-vars
+            return ProfileService.updateProfile(payload).then(({success, errors}) => {
+                if (success) {
+                    dispatch("alerts/add_success", "User updated successfully", {root: true});
+                    dispatch("getCurrentUserData");
+                    commit("SET_LOADING", false);
+                } else {
+                    commit("SET_LOADING", false);
+                    dispatch("alerts/add_error", errors.message, {root: true});
+                    commit("serErrors", errors)
+                }
+            });
+        },
     },
     mutations: {
         getCurrentUserSuccessfully(state, response) {
@@ -50,6 +69,22 @@ export const profile = {
         },
         SET_LOADING(state, status) {
             state.loading = status;
+        },
+        serErrors(state, response) {
+            let obj = response.errors;
+            const transformObj = obj => {
+                return Object.keys(obj).reduce((acc, key) => {
+                    if(key.indexOf('.') >= 0){
+                        const [parentKey, childKey] = key.split('.');
+                        acc[parentKey] = acc[parentKey] || {};
+                        acc[parentKey][childKey] = obj[key];
+                    } else {
+                        acc[key] = obj[key];
+                    }
+                    return acc;
+                }, {});
+            }
+            state.user.errors = transformObj(obj)
         },
     },
     getters: {
