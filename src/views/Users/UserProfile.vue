@@ -3,34 +3,47 @@
     <base-header
       class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
       style="
-        min-height: 300px;
+        min-height: 600px;
         /*background-image: url(img/theme/profile-cover.jpg);*/
         background-size: cover;
         background-position: center top;
       "
     >
-
+      <!-- Mask -->
+      <span class="mask bg-gradient-success opacity-8"></span>
+      <!-- Header container -->
+      <div class="container-fluid d-flex align-items-center">
+        <div class="row" v-if="!isLoading">
+          <div class="col-lg-7 col-md-10">
+            <h1 class="display-2 text-white">Hello {{this.currentUser.name}} {{this.currentUser.surname}}</h1>
+            <p class="text-white mt-0 mb-5">
+              This is your profile page.
+              Your role is: {{this.currentUser.roles[0].name ?? 'No info'}}
+            </p>
+          </div>
+        </div>
+      </div>
     </base-header>
 
     <div class="container-fluid mt--7">
       <div class="row">
         <div class="col-xl-12 order-xl-1">
-          <card shadow type="secondary" v-if="!isLoading">
+          <card shadow type="secondary">
             <template v-slot:header>
               <div class="bg-white border-0">
                 <div class="row align-items-center">
                   <div class="col-8">
-                    <h3 class="mb-0">Account</h3>
+                    <h3 class="mb-0">My account</h3>
+                  </div>
+                  <div class="col-4 text-right">
+                    <a href="#!" class="btn btn-sm btn-primary">Settings</a>
                   </div>
                 </div>
               </div>
             </template>
 
-            <form @submit.prevent="this.updateUser(this.user)">
+            <form v-if="!isLoading">
               <h6 class="heading-small text-muted mb-4">Authuser information</h6>
-              <div class="text-right">
-                <button type="submit" class="btn btn-sm btn-success">Save</button>
-              </div>
               <div class="pl-lg-4">
                 <div class="row">
                   <div class="col-lg-12">
@@ -39,8 +52,7 @@
                       label="Email address"
                       placeholder="jesse@example.com"
                       input-classes="form-control-alternative"
-                      v-model="this.user.email"
-                      :error="this.user?.errors?.errors?.email"
+                      v-model="this.currentUser.email"
                     />
                   </div>
                 </div>
@@ -51,8 +63,7 @@
                       label="First name"
                       placeholder="First name"
                       input-classes="form-control-alternative"
-                      v-model="this.user.name"
-                      :error="this.user?.errors?.errors?.name"
+                      v-model="this.currentUser.name"
                     />
                   </div>
                   <div class="col-lg-6">
@@ -61,8 +72,7 @@
                       label="Last name"
                       placeholder="Last name"
                       input-classes="form-control-alternative"
-                      v-model="this.user.surname"
-                      :error="this.user?.errors?.errors?.surname"
+                      v-model="this.currentUser.surname"
                     />
                   </div>
                 </div>
@@ -78,7 +88,7 @@
                       label="Address"
                       placeholder="Home Address"
                       input-classes="form-control-alternative"
-                      v-model="model.address"
+                      v-model="this.currentUser.additionalInfo.address"
                     />
                   </div>
                 </div>
@@ -86,28 +96,10 @@
                   <div class="col-lg-4">
                     <base-input
                       alternative=""
-                      label="City"
-                      placeholder="City"
+                      label="Phone number"
+                      placeholder="Phone number"
                       input-classes="form-control-alternative"
-                      v-model="model.city"
-                    />
-                  </div>
-                  <div class="col-lg-4">
-                    <base-input
-                      alternative=""
-                      label="Country"
-                      placeholder="Country"
-                      input-classes="form-control-alternative"
-                      v-model="model.country"
-                    />
-                  </div>
-                  <div class="col-lg-4">
-                    <base-input
-                      alternative=""
-                      label="Postal code"
-                      placeholder="Postal code"
-                      input-classes="form-control-alternative"
-                      v-model="model.zipCode"
+                      v-model="this.currentUser.additionalInfo.phone_number"
                     />
                   </div>
                 </div>
@@ -122,9 +114,9 @@
                       rows="4"
                       class="form-control form-control-alternative"
                       placeholder="A few words about you ..."
+                      v-model="this.currentUser.additionalInfo.about_me"
                     >
-A beautiful Dashboard for Bootstrap 4. It is Free and Open Source.</textarea
-                    >
+                    </textarea>
                   </base-input>
                 </div>
               </div>
@@ -138,48 +130,19 @@ A beautiful Dashboard for Bootstrap 4. It is Free and Open Source.</textarea
 <script>
 import { mapGetters, mapActions } from "vuex";
 export default {
-  name: "edit-user",
-  data() {
-    return {
-      model: {
-        username: "",
-        email: "",
-        firstName: "",
-        lastName: "",
-        address: "",
-        city: "",
-        country: "",
-        zipCode: "",
-        about: "",
-      },
-
-    };
-  },
-  async mounted() {
-    await this.getData(this.$route.params.id)
+  name: "user-profile",
+  mounted() {
+    this.getUser();
   },
   methods: {
-    ...mapActions({
-      getUser: "users/get",
-      updateUser: "users/update"
-    }),
-    async getData(id) {
-      await this.getUser(id);
-    },
+    ...mapActions({getUser: "profile/getCurrentUserData"})
   },
   computed: {
     ...mapGetters({
-      user: "users/selectedUser",
-      isLoading: "users/isLoading",
+      currentUser: "profile/currentUser",
+      isLoading: "profile/isLoading",
     }),
   },
-  created() {
-
-  },
-  async beforeRouteUpdate (to, from, next) {
-    await this.getData(to.params.id);
-    next();
-  }
 };
 </script>
 <style></style>

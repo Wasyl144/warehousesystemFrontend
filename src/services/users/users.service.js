@@ -16,10 +16,24 @@ class UsersService {
         });
     }
 
+    destroy(params) {
+        return axios.delete(`/user/${params.id}`).then(response => {
+            console.log(response.data)
+            return {
+                success: true,
+                response: response.data
+            }
+        }, error => {
+            return {
+                success: false,
+                errors: error.response.data
+            }
+        });
+    }
+
     getUsers(params) {
         const options = {
             params: params
-
         }
         return axios.get('/users', options).then(response => {
             return {
@@ -43,18 +57,38 @@ class UsersService {
 
 
     updateUser(user) {
-        const payload = {
-            id: user.id,
-            name: user.username,
-            email: user.email
-        };
+        // const payload = {
+        //     id: user.id,
+        //     name: user.name,
+        //     email: user.email,
+        //     surname: user.surname
+        // };
 
         const options = {
             headers: {
                 'Accept': 'application/json',
             }
         };
-        return axios.put(`/user/${user.id}`, payload, options)
+        return axios.put(`/user/${user.id}`, user, options)
+            // eslint-disable-next-line no-unused-vars
+            .then(response => {
+                return {
+                    success: true,
+                }
+            }, error => {
+                return {
+                    success: false,
+                    errors: error.response.data
+                }
+            });
+    }
+    create(user) {
+        const options = {
+            headers: {
+                'Accept': 'application/json',
+            }
+        };
+        return axios.post(`/user`, user, options)
             // eslint-disable-next-line no-unused-vars
             .then(response => {
                 return {

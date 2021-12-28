@@ -25,7 +25,7 @@ import Axios from "axios";
 import devtools from '@vue/devtools';
 import Can from '@/mixins/can';
 import Notifications from '@kyvg/vue3-notification'
-
+import QrReader from 'vue3-qr-reader';
 Axios.defaults.headers["Accept"] = "Application/json";
 Axios.defaults.baseURL = process.env.VUE_APP_API_URL;
 
@@ -44,4 +44,5 @@ appInstance.use(store);
 appInstance.config.devtools = true;
 appInstance.use(ArgonDashboard);
 appInstance.use(Notifications);
+appInstance.use(QrReader);
 appInstance.mount("#app");

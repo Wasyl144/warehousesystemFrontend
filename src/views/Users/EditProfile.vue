@@ -3,47 +3,34 @@
     <base-header
       class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
       style="
-        min-height: 600px;
+        min-height: 300px;
         /*background-image: url(img/theme/profile-cover.jpg);*/
         background-size: cover;
         background-position: center top;
       "
     >
-      <!-- Mask -->
-      <span class="mask bg-gradient-success opacity-8"></span>
-      <!-- Header container -->
-      <div class="container-fluid d-flex align-items-center">
-        <div class="row">
-          <div class="col-lg-7 col-md-10">
-            <h1 class="display-2 text-white">Hello {{this.currentUser.name}}</h1>
-            <p class="text-white mt-0 mb-5">
-              This is your profile page. You can see the progress you've made
-              with your work and manage your projects or assigned tasks
-            </p>
-          </div>
-        </div>
-      </div>
+
     </base-header>
 
     <div class="container-fluid mt--7">
       <div class="row">
         <div class="col-xl-12 order-xl-1">
-          <card shadow type="secondary">
+          <card shadow type="secondary" v-if="!isLoadingUser && !isLoadingRoles">
             <template v-slot:header>
               <div class="bg-white border-0">
                 <div class="row align-items-center">
                   <div class="col-8">
-                    <h3 class="mb-0">My account</h3>
-                  </div>
-                  <div class="col-4 text-right">
-                    <a href="#!" class="btn btn-sm btn-primary">Settings</a>
+                    <h3 class="mb-0">Account</h3>
                   </div>
                 </div>
               </div>
             </template>
 
-            <form>
-              <h6 class="heading-small text-muted mb-4">Authuser information</h6>
+            <form @submit.prevent="this.updateUser(this.user)">
+              <h6 class="heading-small text-muted mb-4">Edit user</h6>
+              <div class="text-right">
+                <button type="submit" class="btn btn-sm btn-success">Save</button>
+              </div>
               <div class="pl-lg-4">
                 <div class="row">
                   <div class="col-lg-12">
@@ -52,7 +39,8 @@
                       label="Email address"
                       placeholder="jesse@example.com"
                       input-classes="form-control-alternative"
-                      v-model="this.currentUser.email"
+                      v-model="this.user.email"
+                      :error="this.user?.errors?.email"
                     />
                   </div>
                 </div>
@@ -63,7 +51,8 @@
                       label="First name"
                       placeholder="First name"
                       input-classes="form-control-alternative"
-                      v-model="this.currentUser.name"
+                      v-model="this.user.name"
+                      :error="this.user?.errors?.name"
                     />
                   </div>
                   <div class="col-lg-6">
@@ -72,8 +61,20 @@
                       label="Last name"
                       placeholder="Last name"
                       input-classes="form-control-alternative"
-                      v-model="this.currentUser.surname"
+                      v-model="this.user.surname"
+                      :error="this.user?.errors?.surname"
                     />
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label class="form-control-label" >Role</label>
+                      <select v-model="this.user.roles[0]" class="form-control">
+                        <option value="0"></option>
+                        <option v-for="role in roles" v-bind:value="{id: role.id, name: role.name}" :key="role.id" >{{role.name}}</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -88,7 +89,8 @@
                       label="Address"
                       placeholder="Home Address"
                       input-classes="form-control-alternative"
-                      v-model="model.address"
+                      v-model="this.user.additionalInfo.address"
+                      :error="user?.errors?.additionalInfo?.address"
                     />
                   </div>
                 </div>
@@ -96,28 +98,11 @@
                   <div class="col-lg-4">
                     <base-input
                       alternative=""
-                      label="City"
-                      placeholder="City"
+                      label="Phone number"
+                      placeholder="Phone number"
                       input-classes="form-control-alternative"
-                      v-model="model.city"
-                    />
-                  </div>
-                  <div class="col-lg-4">
-                    <base-input
-                      alternative=""
-                      label="Country"
-                      placeholder="Country"
-                      input-classes="form-control-alternative"
-                      v-model="model.country"
-                    />
-                  </div>
-                  <div class="col-lg-4">
-                    <base-input
-                      alternative=""
-                      label="Postal code"
-                      placeholder="Postal code"
-                      input-classes="form-control-alternative"
-                      v-model="model.zipCode"
+                      v-model="this.user.additionalInfo.phone_number"
+                      :error="user?.errors?.additionalInfo?.phone_number"
                     />
                   </div>
                 </div>
@@ -132,9 +117,9 @@
                       rows="4"
                       class="form-control form-control-alternative"
                       placeholder="A few words about you ..."
+                      v-model="this.user.additionalInfo.about_me"
                     >
-A beautiful Dashboard for Bootstrap 4. It is Free and Open Source.</textarea
-                    >
+                    </textarea>
                   </base-input>
                 </div>
               </div>
@@ -148,33 +133,38 @@ A beautiful Dashboard for Bootstrap 4. It is Free and Open Source.</textarea
 <script>
 import { mapGetters, mapActions } from "vuex";
 export default {
-  name: "user-profile",
-  data() {
-    return {
-      model: {
-        username: "",
-        email: "",
-        firstName: "",
-        lastName: "",
-        address: "",
-        city: "",
-        country: "",
-        zipCode: "",
-        about: "",
-      },
-    };
+  name: "edit-user",
+
+  async mounted() {
+    await this.getData(this.$route.params.id)
   },
-  mounted() {
-    this.getUser();
-  },
+
   methods: {
-    ...mapActions({getUser: "profile/getCurrentUserData"})
+    ...mapActions({
+      getUser: "users/get",
+      updateUser: "users/update",
+      getAllRoles: "roles/getAllRoles"
+    }),
+    async getData(id) {
+      await this.getUser(id);
+      await this.getAllRoles();
+    },
   },
   computed: {
     ...mapGetters({
-      currentUser: "profile/currentUser",
+      user: "users/selectedUser",
+      roles: "roles/roles",
+      isLoadingUser: "users/isLoading",
+      isLoadingRoles: "roles/isLoading",
     }),
   },
+  created() {
+
+  },
+  async beforeRouteUpdate (to, from, next) {
+    await this.getData(to.params.id);
+    next();
+  }
 };
 </script>
 <style></style>

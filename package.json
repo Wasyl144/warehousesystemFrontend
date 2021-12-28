@@ -20,8 +20,10 @@
     "nouislider": "14.6.0",
     "vee-validate": "^4.5.0",
     "vue": "3.0.5",
+    "vue-qrcode-reader": "^3.1.0",
     "vue-router": "4.0.1",
     "vue-toastification": "1.7.11",
+    "vue3-qr-reader": "^1.0.0",
     "vuex": "^4.0.2"
   },
   "devDependencies": {

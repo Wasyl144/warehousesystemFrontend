@@ -2,8 +2,8 @@
   <div class="wrapper" :class="{ 'nav-open': $sidebar.showSidebar }">
     <side-bar
       :background-color="sidebarBackground"
-      short-title="Argon"
-      title="Argon"
+      short-title="WH"
+      title="WarehouseSystem"
     >
       <template v-slot:links>
         <sidebar-item
@@ -23,37 +23,50 @@
         />
         <sidebar-item
           :link="{
-            name: 'Maps',
-            icon: 'ni ni-pin-3 text-orange',
-            path: '/maps',
-          }"
-        />
-        <sidebar-item
-          :link="{
-            name: 'Authuser Profile',
+            name: 'My Profile',
             icon: 'ni ni-single-02 text-yellow',
             path: '/profile',
           }"
         />
         <sidebar-item
           :link="{
-            name: 'Tables',
-            icon: 'ni ni-bullet-list-67 text-red',
-            path: '/tables',
+            name: 'Items',
+            icon: 'ni ni-collection text-red',
+            path: '/items',
           }"
         />
         <sidebar-item
           :link="{
-            name: 'Login',
-            icon: 'ni ni-key-25 text-info',
-            path: '/login',
+            name: 'QR Scanner',
+            icon: 'ni ni-mobile-button',
+            path: '/qrscanner',
+          }"
+        />
+      </template>
+      <template v-slot:managment>
+        <sidebar-item
+            v-if="can('categories.index')"
+            :link="{
+            name: 'Categories',
+            icon: 'ni ni-tv-2 text-primary',
+            path: '/dashboard',
+          }"
+        />
+
+        <sidebar-item
+            v-if="can('role.index')"
+          :link="{
+            name: 'Roles',
+            icon: 'ni ni-planet text-red',
+            path: '/roles',
           }"
         />
         <sidebar-item
-          :link="{
-            name: 'Register',
-            icon: 'ni ni-circle-08 text-pink',
-            path: '/register',
+            v-if="can('user.index')"
+            :link="{
+            name: 'Users',
+            icon: 'ni ni-user-run text-red',
+            path: '/users',
           }"
         />
       </template>

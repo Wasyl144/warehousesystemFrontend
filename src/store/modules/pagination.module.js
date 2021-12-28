@@ -2,7 +2,7 @@ export const pagination = {
     namespaced: true,
     state: {
         paginator: {
-            perPage: 2,
+            perPage: 5,
             page: 1,
             currentPage: 1,
             from: 1,
@@ -31,7 +31,7 @@ export const pagination = {
         SET_PER_PAGE(state, perPage) {
             state.paginator.perPage = perPage
         },
-        SET_ALL(state, data) {
+        SET_ALL_PAGINATION(state, data) {
             state.paginator = data
         }
     },

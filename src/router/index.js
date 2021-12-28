@@ -7,14 +7,21 @@ import Dashboard from "../views/Dashboard.vue";
 import Icons from "../views/Icons.vue";
 import Maps from "../views/Maps.vue";
 import Profile from "../views/Profile.vue";
-import UserProfile from "../views/UserProfile";
-import Tables from "../views/Tables.vue";
+import UserProfile from "../views/Users/UserProfile";
 
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
 
 import store from '@/store/index.js';
-import EditProfile from "../views/EditProfile";
+import EditProfile from "../views/Users/EditProfile";
+import QrScanner from "../views/QrScanner";
+import UsersTable from "../views/Users/UsersTable";
+import RolesTable from "../views/Roles/RolesTable";
+import AddRole from "../views/Roles/AddRole";
+import EditRole from "../views/Roles/EditRole";
+import Permissions from "../views/Roles/Permissions";
+import AddProfile from "../views/Users/AddProfile";
+// import EditRole from "../views/Roles/EditRole";
 
 const routes = [
     {
@@ -47,9 +54,9 @@ const routes = [
                 components: {default: UserProfile},
             },
             {
-                path: "/tables",
-                name: "tables",
-                components: {default: Tables},
+                path: "/users",
+                name: "users",
+                components: {default: UsersTable},
                 meta: {
                     permission: 'user.index'
                 }
@@ -66,7 +73,56 @@ const routes = [
                 path: '/user/edit/:id',
                 name: 'editUser',
                 component: EditProfile,
+                meta: {
+                    permission: "user.update"
+                }
             },
+            {
+                path: '/user/create',
+                name: 'createUser',
+                component: AddProfile,
+                meta: {
+                    permission: "user.store"
+                }
+            },
+            {
+                path: '/qrscanner',
+                name: 'qrscanner',
+                component: QrScanner,
+            },
+            {
+                path: '/roles',
+                name: 'indexRoles',
+                component: RolesTable,
+                meta: {
+                    permission: "role.index"
+                }
+            },
+            {
+                path: '/roles/create',
+                name: 'createRoles',
+                component: AddRole,
+                meta: {
+                    permission: "role.store"
+                }
+            },
+            {
+                path: '/roles/edit/:id',
+                name: 'editRoles',
+                component: EditRole,
+                meta: {
+                    permission: "role.update"
+                }
+            },
+            {
+                path: '/roles/edit/:id/permissions',
+                name: 'editPermissions',
+                component: Permissions,
+                meta: {
+                    permission: "role.update"
+                }
+            },
+
         ],
     },
     {
