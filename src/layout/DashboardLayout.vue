@@ -29,6 +29,7 @@
           }"
         />
         <sidebar-item
+            v-if="can('items.index')"
           :link="{
             name: 'Items',
             icon: 'ni ni-collection text-red',

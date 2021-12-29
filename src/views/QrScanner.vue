@@ -15,6 +15,7 @@
                       <qr-stream @decode="onDecode" class="mb"></qr-stream>
                   </div>
                   <div class="col-md-4">
+                    <p v-if="error" class="text-danger">{{error}}</p>
                   </div>
                   <div class="col-md-2">
                     <div class="form-group">
@@ -37,12 +38,33 @@
 
 export default {
   name: "QrScanner",
+  data() {
+    return {
+      error: '',
+    }
+  },
   components: {
 
   },
   methods: {
     onDecode(data) {
-      console.log(data)
+      try {
+        console.log(data)
+        const json = JSON.parse(data);
+        if (json && json.itemId > 0) {
+          this.$router.push({
+            name: "showItems",
+            params: {
+              id: json.itemId
+            }
+          })
+        }
+        else {
+          this.error = 'Please scan valid QRCode'
+        }
+      } catch (e) {
+        this.error = 'Please scan valid QRCode'
+      }
     }
   }
 

@@ -24,6 +24,10 @@ import AddCategory from "../views/Categories/AddCategory";
 import EditCategory from "../views/Categories/EditCategory";
 import CategoryTable from "../views/Categories/CategoryTable";
 import Permissions from "../views/Roles/Permissions";
+import ItemsTable from "../views/Items/ItemsTable";
+import AddItems from "../views/Items/AddItems";
+import EditItems from "../views/Items/EditItems";
+import ShowItem from "../views/Items/ShowItem";
 
 
 const routes = [
@@ -147,6 +151,38 @@ const routes = [
                 component: EditCategory,
                 meta: {
                     permission: "categories.update"
+                }
+            },
+            {
+                path: '/items',
+                name: 'indexItems',
+                component: ItemsTable,
+                meta: {
+                    permission: "items.index"
+                }
+            },
+            {
+                path: '/items/create',
+                name: 'createItems',
+                component: AddItems,
+                meta: {
+                    permission: "items.store"
+                }
+            },
+            {
+                path: '/items/edit/:id',
+                name: 'editItems',
+                component: EditItems,
+                meta: {
+                    permission: "items.update"
+                }
+            },
+            {
+                path: '/items/show/:id',
+                name: 'showItems',
+                component: ShowItem,
+                meta: {
+                    permission: "items.show"
                 }
             },
         ],
