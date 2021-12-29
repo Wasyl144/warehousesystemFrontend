@@ -15,10 +15,10 @@
       <div class="container-fluid d-flex align-items-center">
         <div class="row" v-if="!isLoading">
           <div class="col-lg-7 col-md-10">
-            <h1 class="display-2 text-white">Hello {{ this.user.name }} {{ this.user.surname }}</h1>
+            <h1 class="display-2 text-white">Hello {{ this?.user?.name }} {{ this?.user?.surname }}</h1>
             <p class="text-white mt-0 mb-5">
               This is your profile page.
-              Your role is: {{ this.user.roles[0].name ?? 'No info' }}
+              Your role is: {{ user?.roles[0]?.name ?? 'No info' }}
             </p>
           </div>
         </div>
@@ -168,8 +168,9 @@ import {mapGetters, mapActions} from "vuex";
 
 export default {
   name: "user-profile",
-  mounted() {
-    this.getUser();
+  async mounted() {
+    await this.getUser();
+    console.log(this.user)
   },
   methods: {
     ...mapActions({

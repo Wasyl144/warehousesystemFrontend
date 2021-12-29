@@ -18,14 +18,14 @@ export const profile = {
         getCurrentUserData({ commit, dispatch }) {
             commit('SET_LOADING', true);
             dispatch('getPermissions');
-            return ProfileService.getCurrentUserData().then(response => {
-                commit('getCurrentUserSuccessfully', response);
-                commit('SET_LOADING', false);
-                return Promise.resolve(response);
-            }, (error) => {
-                commit('getCurrentUserFailed');
-                commit('SET_LOADING', false);
-                return Promise.reject(error)
+            return ProfileService.getCurrentUserData().then(({success, response, errors}) => {
+                if (success) {
+                    commit("getCurrentUserSuccessfully", response)
+                    commit("SET_LOADING", false);
+                } else {
+                    dispatch("alerts/add_error", errors.message, {root: true});
+                    commit("getCurrentUserFailed", errors);
+                }
             })
         },
         getPermissions( {commit} ) {
@@ -54,6 +54,7 @@ export const profile = {
     },
     mutations: {
         getCurrentUserSuccessfully(state, response) {
+            console.log(response)
             let additionalInfo = new Additionalinfo(response.more_info?.phone_number, response.more_info?.address, response.more_info?.about_me);
             let roles = response.roles?.map(role => {
                 return new Role(role?.id, role?.name)

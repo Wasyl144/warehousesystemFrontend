@@ -3,8 +3,15 @@ import axios from "axios";
 class ProfileService {
     getCurrentUserData() {
         return axios.get('/self').then(response => {
-            if (response.data) {
-                return response.data;
+            console.log(response.data)
+            return {
+                success: true,
+                response: response.data
+            }
+        }, error => {
+            return {
+                success: false,
+                errors: error.response.data
             }
         });
     }
