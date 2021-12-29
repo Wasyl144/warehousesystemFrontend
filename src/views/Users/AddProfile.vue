@@ -27,7 +27,7 @@
             </template>
 
             <form @submit.prevent="createUser(userModel)">
-              <h6 class="heading-small text-muted mb-4">Edit user</h6>
+              <h6 class="heading-small text-muted mb-4">Add user</h6>
               <div class="text-right">
                 <button type="submit" class="btn btn-sm btn-success">Save</button>
               </div>

@@ -19,9 +19,11 @@ import UsersTable from "../views/Users/UsersTable";
 import RolesTable from "../views/Roles/RolesTable";
 import AddRole from "../views/Roles/AddRole";
 import EditRole from "../views/Roles/EditRole";
-import Permissions from "../views/Roles/Permissions";
 import AddProfile from "../views/Users/AddProfile";
-// import EditRole from "../views/Roles/EditRole";
+import AddCategory from "../views/Categories/AddCategory";
+import EditCategory from "../views/Categories/EditCategory";
+import CategoryTable from "../views/Categories/CategoryTable";
+
 
 const routes = [
     {
@@ -115,14 +117,29 @@ const routes = [
                 }
             },
             {
-                path: '/roles/edit/:id/permissions',
-                name: 'editPermissions',
-                component: Permissions,
+                path: '/categories',
+                name: 'indexCategories',
+                component: CategoryTable,
                 meta: {
-                    permission: "role.update"
+                    permission: "categories.index"
                 }
             },
-
+            {
+                path: '/categories/create',
+                name: 'createCategories',
+                component: AddCategory,
+                meta: {
+                    permission: "categories.store"
+                }
+            },
+            {
+                path: '/categories/edit/:id',
+                name: 'editCategories',
+                component: EditCategory,
+                meta: {
+                    permission: "categories.update"
+                }
+            },
         ],
     },
     {

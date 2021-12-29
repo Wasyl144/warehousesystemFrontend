@@ -18,13 +18,13 @@
             <div class="bg-white border-0">
               <div class="row align-items-center">
                 <div class="col-8">
-                  <h3 class="mb-0">Edit role</h3>
+                  <h3 class="mb-0">Edit Category</h3>
                 </div>
               </div>
             </div>
           </template>
           <div v-if="!isLoading">
-            <form @submit.prevent="updateRole(role)">
+            <form @submit.prevent="updateCategory(category)">
               <div class="text-right">
                 <button type="submit" class="btn btn-sm btn-success">Save</button>
               </div>
@@ -36,8 +36,8 @@
                         label="Role name"
                         placeholder="ex. Worker"
                         input-classes="form-control-alternative"
-                        v-model="role.name"
-                        :error="role?.errors?.errors?.name"
+                        v-model="category.name"
+                        :error="category?.errors?.errors?.name"
                     />
                   </div>
                 </div>
@@ -65,24 +65,24 @@
 import {mapActions, mapGetters} from "vuex";
 
 export default {
-  name: "EditRole",
+  name: "EditCategory",
 
   async mounted() {
     await this.getData(this.$route.params.id)
   },
   methods: {
     ...mapActions({
-      updateRole: "roles/update",
-      getRole: "roles/get"
+      updateCategory: "categories/update",
+      getCategory: "categories/get"
     }),
     async getData(id) {
-      await this.getRole(id);
+      await this.getCategory(id);
     },
   },
   computed: {
     ...mapGetters({
-      role: "roles/role",
-      isLoading: "roles/isLoading",
+      category: "categories/category",
+      isLoading: "categories/isLoading",
     }),
   },
 

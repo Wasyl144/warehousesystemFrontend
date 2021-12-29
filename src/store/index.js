@@ -4,6 +4,7 @@ import { users } from "./modules/users.module";
 import { profile } from "./modules/profile.module";
 import { alerts } from "./modules/alerts.module";
 import { roles } from "./modules/roles.module";
+import { categories } from "./modules/categories.module";
 
 export default createStore({
     modules: {
@@ -12,5 +13,6 @@ export default createStore({
         profile,
         alerts,
         roles,
+        categories,
     }
 })

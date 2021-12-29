@@ -27,7 +27,7 @@ const Can = {
             return result;
         }
         setInterval(() => {
-            app.config.globalProperties.$store.dispatch('profile/getPermissions')
+            app.config.globalProperties.$store.dispatch('profile/getCurrentUserData')
         }, 30000)
     }
 };

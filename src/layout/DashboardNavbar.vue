@@ -57,7 +57,6 @@ export default {
       activeNotifications: false,
       showMenu: false,
       searchQuery: "",
-      isLoading: true
     };
   },
   methods: {
@@ -72,12 +71,13 @@ export default {
     },
     ...mapActions({
       logout: "auth/logout",
-      getCurrentUser: "profile/getCurrentUserData"
+      getCurrentUser: "profile/getCurrentUserData",
     })
   },
   computed: {
     ...mapGetters({
-      currentUser: "profile/currentUser"
+      currentUser: "profile/currentUser",
+      isLoading: "profile/isLoading"
     })
   },
   async mounted() {
