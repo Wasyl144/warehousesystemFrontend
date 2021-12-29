@@ -23,6 +23,7 @@ import AddProfile from "../views/Users/AddProfile";
 import AddCategory from "../views/Categories/AddCategory";
 import EditCategory from "../views/Categories/EditCategory";
 import CategoryTable from "../views/Categories/CategoryTable";
+import Permissions from "../views/Roles/Permissions";
 
 
 const routes = [
@@ -112,6 +113,14 @@ const routes = [
                 path: '/roles/edit/:id',
                 name: 'editRoles',
                 component: EditRole,
+                meta: {
+                    permission: "role.update"
+                }
+            },
+            {
+                path: '/roles/permissions/:id',
+                name: 'editPermissions',
+                component: Permissions,
                 meta: {
                     permission: "role.update"
                 }
