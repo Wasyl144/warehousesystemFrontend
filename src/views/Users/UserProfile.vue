@@ -39,6 +39,12 @@
               </div>
             </template>
 
+            <div v-if="isLoading" class="d-flex justify-content-center">
+              <div class="spinner-border text-success" role="status" style="width: 5rem; height: 5rem;">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </div>
+
             <form v-if="!isLoading" @submit.prevent="this.updateProfile(this.user)">
               <h6 class="heading-small text-muted mb-4">Edit user</h6>
               <div class="text-right">

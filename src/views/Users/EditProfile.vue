@@ -15,7 +15,7 @@
     <div class="container-fluid mt--7">
       <div class="row">
         <div class="col-xl-12 order-xl-1">
-          <card shadow type="secondary" v-if="!isLoadingUser && !isLoadingRoles">
+          <card shadow type="secondary">
             <template v-slot:header>
               <div class="bg-white border-0">
                 <div class="row align-items-center">
@@ -26,7 +26,13 @@
               </div>
             </template>
 
-            <form @submit.prevent="this.updateUser(this.user)">
+            <div v-if="isLoadingUser || isLoadingRoles" class="d-flex justify-content-center">
+              <div class="spinner-border text-success" role="status" style="width: 5rem; height: 5rem;">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </div>
+
+            <form v-if="!isLoadingUser && !isLoadingRoles" @submit.prevent="this.updateUser(this.user)">
               <h6 class="heading-small text-muted mb-4">Edit user</h6>
               <div class="text-right">
                 <button type="submit" class="btn btn-sm btn-success">Save</button>
