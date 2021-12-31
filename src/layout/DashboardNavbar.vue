@@ -7,9 +7,7 @@
   >
     <form
       class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto"
-    >
-
-    </form>
+    ></form>
     <ul class="navbar-nav align-items-center d-none d-md-flex">
       <li class="nav-item dropdown">
         <base-dropdown class="nav-link pr-0">
@@ -49,7 +47,7 @@
   </base-nav>
 </template>
 <script>
-import {mapActions, mapGetters} from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   data() {
@@ -72,13 +70,13 @@ export default {
     ...mapActions({
       logout: "auth/logout",
       getCurrentUser: "profile/getCurrentUserData",
-    })
+    }),
   },
   computed: {
     ...mapGetters({
       currentUser: "profile/currentUser",
-      isLoading: "profile/isLoading"
-    })
+      isLoading: "profile/isLoading",
+    }),
   },
   async mounted() {
     await this.getCurrentUser();

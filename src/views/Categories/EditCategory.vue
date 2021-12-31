@@ -1,14 +1,13 @@
 <template>
   <base-header
-      class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
-      style="
-        min-height: 300px;
-        /*background-image: url(img/theme/profile-cover.jpg);*/
-        background-size: cover;
-        background-position: center top;
-      "
+    class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
+    style="
+      min-height: 300px;
+      /*background-image: url(img/theme/profile-cover.jpg);*/
+      background-size: cover;
+      background-position: center top;
+    "
   >
-
   </base-header>
   <div class="container-fluid mt--7">
     <div class="row">
@@ -26,18 +25,20 @@
           <div v-if="!isLoading">
             <form @submit.prevent="updateCategory(category)">
               <div class="text-right">
-                <button type="submit" class="btn btn-sm btn-success">Save</button>
+                <button type="submit" class="btn btn-sm btn-success">
+                  Save
+                </button>
               </div>
               <div class="pl-lg-4">
                 <div class="row">
                   <div class="col-lg-12">
                     <base-input
-                        alternative=""
-                        label="Role name"
-                        placeholder="ex. Worker"
-                        input-classes="form-control-alternative"
-                        v-model="category.name"
-                        :error="category?.errors?.errors?.name"
+                      alternative=""
+                      label="Role name"
+                      placeholder="ex. Worker"
+                      input-classes="form-control-alternative"
+                      v-model="category.name"
+                      :error="category?.errors?.errors?.name"
                     />
                   </div>
                 </div>
@@ -48,7 +49,11 @@
             <div class="row">
               <div class="col-lg-12">
                 <div v-if="isLoading" class="d-flex justify-content-center">
-                  <div class="spinner-border text-success" role="status" style="width: 5rem; height: 5rem;">
+                  <div
+                    class="spinner-border text-success"
+                    role="status"
+                    style="width: 5rem; height: 5rem"
+                  >
                     <span class="sr-only">Loading...</span>
                   </div>
                 </div>
@@ -62,18 +67,18 @@
 </template>
 
 <script>
-import {mapActions, mapGetters} from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "EditCategory",
 
   async mounted() {
-    await this.getData(this.$route.params.id)
+    await this.getData(this.$route.params.id);
   },
   methods: {
     ...mapActions({
       updateCategory: "categories/update",
-      getCategory: "categories/get"
+      getCategory: "categories/get",
     }),
     async getData(id) {
       await this.getCategory(id);
@@ -86,14 +91,11 @@ export default {
     }),
   },
 
-  async beforeRouteUpdate (to, from, next) {
+  async beforeRouteUpdate(to, from, next) {
     await this.getData(to.params.id);
     next();
-  }
-
-}
+  },
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

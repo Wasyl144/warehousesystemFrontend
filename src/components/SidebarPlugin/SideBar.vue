@@ -100,7 +100,7 @@
 </template>
 <script>
 import NavbarToggleButton from "@/components/NavbarToggleButton";
-import {mapActions} from "vuex";
+import { mapActions } from "vuex";
 
 export default {
   name: "sidebar",

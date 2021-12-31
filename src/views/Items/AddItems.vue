@@ -9,7 +9,6 @@
         background-position: center top;
       "
     >
-
     </base-header>
 
     <div class="container-fluid mt--7">
@@ -26,10 +25,15 @@
               </div>
             </template>
 
-            <form v-if="!isLoadingItem && !isLoadingCategories" @submit.prevent="createItem(itemModel)">
+            <form
+              v-if="!isLoadingItem && !isLoadingCategories"
+              @submit.prevent="createItem(itemModel)"
+            >
               <h6 class="heading-small text-muted mb-4">Add item</h6>
               <div class="text-right">
-                <button type="submit" class="btn btn-sm btn-success">Save</button>
+                <button type="submit" class="btn btn-sm btn-success">
+                  Save
+                </button>
               </div>
               <div class="pl-lg-4">
                 <div class="row">
@@ -69,18 +73,32 @@
                 <div class="row">
                   <div class="col-lg-6">
                     <div class="form-group">
-                      <label class="form-control-label" >Category</label>
+                      <label class="form-control-label">Category</label>
                       <select v-model="itemModel.category" class="form-control">
                         <option value="0"></option>
-                        <option v-for="category in categories" v-bind:value="{id: category.id, name: category.name}" :key="category.id" >{{category.name}}</option>
+                        <option
+                          v-for="category in categories"
+                          v-bind:value="{
+                            id: category.id,
+                            name: category.name,
+                          }"
+                          :key="category.id"
+                        >
+                          {{ category.name }}
+                        </option>
                       </select>
                       <div
-                          class="text-danger invalid-feedback"
-                          style="display: block"
-                          v-if="item?.errors?.category?.id"
+                        class="text-danger invalid-feedback"
+                        style="display: block"
+                        v-if="item?.errors?.category?.id"
                       >
                         <ul>
-                          <li v-for="err in item?.errors?.category?.id" :key="err">{{ err }}</li>
+                          <li
+                            v-for="err in item?.errors?.category?.id"
+                            :key="err"
+                          >
+                            {{ err }}
+                          </li>
                         </ul>
                       </div>
                     </div>
@@ -117,16 +135,16 @@ export default {
   data() {
     return {
       itemModel: {
-        name: '',
-        quantity: '',
-        location: '',
+        name: "",
+        quantity: "",
+        location: "",
         category: null,
-        description: '',
-      }
-    }
+        description: "",
+      },
+    };
   },
   async mounted() {
-    await this.getData()
+    await this.getData();
   },
 
   methods: {
@@ -134,7 +152,7 @@ export default {
       getItem: "items/get",
       createItem: "items/create",
       getAllCategories: "categories/getAllCategories",
-      reset: "items/reset"
+      reset: "items/reset",
     }),
     async getData() {
       await this.reset();
@@ -149,9 +167,7 @@ export default {
       isLoadingCategories: "categories/isLoading",
     }),
   },
-  created() {
-
-  },
+  created() {},
 };
 </script>
 <style></style>

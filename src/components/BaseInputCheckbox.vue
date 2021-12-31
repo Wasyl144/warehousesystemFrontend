@@ -43,7 +43,7 @@ export default {
     value: {
       type: String,
       description: "Value of checkbox",
-    }
+    },
   },
   data() {
     return {
@@ -60,7 +60,7 @@ export default {
         if (!this.touched) {
           this.touched = true;
         }
-        console.log(check)
+        console.log(check);
         this.$emit("input", check);
       },
     },

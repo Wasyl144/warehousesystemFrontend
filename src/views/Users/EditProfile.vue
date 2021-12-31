@@ -9,7 +9,6 @@
         background-position: center top;
       "
     >
-
     </base-header>
 
     <div class="container-fluid mt--7">
@@ -26,16 +25,28 @@
               </div>
             </template>
 
-            <div v-if="isLoadingUser || isLoadingRoles" class="d-flex justify-content-center">
-              <div class="spinner-border text-success" role="status" style="width: 5rem; height: 5rem;">
+            <div
+              v-if="isLoadingUser || isLoadingRoles"
+              class="d-flex justify-content-center"
+            >
+              <div
+                class="spinner-border text-success"
+                role="status"
+                style="width: 5rem; height: 5rem"
+              >
                 <span class="sr-only">Loading...</span>
               </div>
             </div>
 
-            <form v-if="!isLoadingUser && !isLoadingRoles" @submit.prevent="this.updateUser(this.user)">
+            <form
+              v-if="!isLoadingUser && !isLoadingRoles"
+              @submit.prevent="this.updateUser(this.user)"
+            >
               <h6 class="heading-small text-muted mb-4">Edit user</h6>
               <div class="text-right">
-                <button type="submit" class="btn btn-sm btn-success">Save</button>
+                <button type="submit" class="btn btn-sm btn-success">
+                  Save
+                </button>
               </div>
               <div class="pl-lg-4">
                 <div class="row">
@@ -72,38 +83,47 @@
                     />
                   </div>
                 </div>
-                <p class="text-warning">Be careful if you fill a password fields you will change password. </p>
+                <p class="text-warning">
+                  Be careful if you fill a password fields you will change
+                  password.
+                </p>
                 <div class="row">
                   <div class="col-lg-6">
                     <base-input
-                        alternative=""
-                        type="password"
-                        label="Password"
-                        placeholder="Password"
-                        input-classes="form-control-alternative"
-                        v-model="user.password"
-                        :error="user?.errors?.password"
+                      alternative=""
+                      type="password"
+                      label="Password"
+                      placeholder="Password"
+                      input-classes="form-control-alternative"
+                      v-model="user.password"
+                      :error="user?.errors?.password"
                     />
                   </div>
                   <div class="col-lg-6">
                     <base-input
-                        alternative=""
-                        type="password"
-                        label="Confirm password"
-                        placeholder="Confirm password"
-                        input-classes="form-control-alternative"
-                        v-model="user.password_confirmation"
-                        :error="user?.errors?.password_confirmation"
+                      alternative=""
+                      type="password"
+                      label="Confirm password"
+                      placeholder="Confirm password"
+                      input-classes="form-control-alternative"
+                      v-model="user.password_confirmation"
+                      :error="user?.errors?.password_confirmation"
                     />
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-lg-6">
                     <div class="form-group">
-                      <label class="form-control-label" >Role</label>
+                      <label class="form-control-label">Role</label>
                       <select v-model="this.user.roles[0]" class="form-control">
                         <option value="0"></option>
-                        <option v-for="role in roles" v-bind:value="{id: role.id, name: role.name}" :key="role.id" >{{role.name}}</option>
+                        <option
+                          v-for="role in roles"
+                          v-bind:value="{ id: role.id, name: role.name }"
+                          :key="role.id"
+                        >
+                          {{ role.name }}
+                        </option>
                       </select>
                     </div>
                   </div>
@@ -167,14 +187,14 @@ export default {
   name: "edit-user",
 
   async mounted() {
-    await this.getData(this.$route.params.id)
+    await this.getData(this.$route.params.id);
   },
 
   methods: {
     ...mapActions({
       getUser: "users/get",
       updateUser: "users/update",
-      getAllRoles: "roles/getAllRoles"
+      getAllRoles: "roles/getAllRoles",
     }),
     async getData(id) {
       await this.getUser(id);
@@ -189,13 +209,11 @@ export default {
       isLoadingRoles: "roles/isLoading",
     }),
   },
-  created() {
-
-  },
-  async beforeRouteUpdate (to, from, next) {
+  created() {},
+  async beforeRouteUpdate(to, from, next) {
     await this.getData(to.params.id);
     next();
-  }
+  },
 };
 </script>
 <style></style>

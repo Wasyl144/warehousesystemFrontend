@@ -15,26 +15,29 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import { createApp } from "vue";
+import {createApp} from "vue";
 import store from "./store";
 import App from "./App.vue";
 import router from "./router";
 import ArgonDashboard from "./plugins/argon-dashboard";
 import "element-plus/lib/theme-chalk/index.css";
 import Axios from "axios";
-import devtools from '@vue/devtools';
-import Can from '@/mixins/can';
-import Notifications from '@kyvg/vue3-notification'
-import QrReader from 'vue3-qr-reader';
+import devtools from "@vue/devtools";
+import Can from "@/mixins/can";
+import Notifications from "@kyvg/vue3-notification";
+import QrReader from "vue3-qr-reader";
+import "./registerServiceWorker";
+
 Axios.defaults.headers["Accept"] = "Application/json";
 Axios.defaults.baseURL = process.env.VUE_APP_API_URL;
 
 if (localStorage.getItem("token")) {
-    Axios.defaults.headers["Authorization"] = "Bearer " + localStorage.getItem("token");
+    Axios.defaults.headers["Authorization"] =
+        "Bearer " + localStorage.getItem("token");
 }
 
-if (process.env.NODE_ENV === 'development') {
-    devtools.connect('localhost', 8098)
+if (process.env.NODE_ENV === "development") {
+    devtools.connect("localhost", 8098);
 }
 
 const appInstance = createApp(App);

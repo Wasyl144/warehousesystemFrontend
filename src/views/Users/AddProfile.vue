@@ -9,7 +9,6 @@
         background-position: center top;
       "
     >
-
     </base-header>
 
     <div class="container-fluid mt--7">
@@ -25,16 +24,28 @@
                 </div>
               </div>
             </template>
-            <div v-if="isLoadingUser || isLoadingRoles" class="d-flex justify-content-center">
-              <div class="spinner-border text-success" role="status" style="width: 5rem; height: 5rem;">
+            <div
+              v-if="isLoadingUser || isLoadingRoles"
+              class="d-flex justify-content-center"
+            >
+              <div
+                class="spinner-border text-success"
+                role="status"
+                style="width: 5rem; height: 5rem"
+              >
                 <span class="sr-only">Loading...</span>
               </div>
             </div>
 
-            <form v-if="!isLoadingUser && !isLoadingRoles" @submit.prevent="createUser(userModel)">
+            <form
+              v-if="!isLoadingUser && !isLoadingRoles"
+              @submit.prevent="createUser(userModel)"
+            >
               <h6 class="heading-small text-muted mb-4">Add user</h6>
               <div class="text-right">
-                <button type="submit" class="btn btn-sm btn-success">Save</button>
+                <button type="submit" class="btn btn-sm btn-success">
+                  Save
+                </button>
               </div>
               <div class="pl-lg-4">
                 <div class="row">
@@ -98,10 +109,16 @@
                 <div class="row">
                   <div class="col-lg-6">
                     <div class="form-group">
-                      <label class="form-control-label" >Role</label>
+                      <label class="form-control-label">Role</label>
                       <select v-model="userModel.role" class="form-control">
                         <option value="0"></option>
-                        <option v-for="role in roles" v-bind:value="{id: role.id, name: role.name}" :key="role.id" >{{role.name}}</option>
+                        <option
+                          v-for="role in roles"
+                          v-bind:value="{ id: role.id, name: role.name }"
+                          :key="role.id"
+                        >
+                          {{ role.name }}
+                        </option>
                       </select>
                     </div>
                   </div>
@@ -166,22 +183,22 @@ export default {
   data() {
     return {
       userModel: {
-        email: '',
-        name: '',
-        surname: '',
-        password: '',
-        password_confirmation: '',
-        role: '',
+        email: "",
+        name: "",
+        surname: "",
+        password: "",
+        password_confirmation: "",
+        role: "",
         additionalInfo: {
-          phone_number: '',
-          address: '',
-          about_me: '',
+          phone_number: "",
+          address: "",
+          about_me: "",
         },
-      }
-    }
+      },
+    };
   },
   async mounted() {
-    await this.getData()
+    await this.getData();
   },
 
   methods: {
@@ -189,7 +206,7 @@ export default {
       getUser: "users/get",
       createUser: "users/create",
       getAllRoles: "roles/getAllRoles",
-      reset: "users/reset"
+      reset: "users/reset",
     }),
     async getData() {
       await this.reset();
@@ -204,9 +221,7 @@ export default {
       isLoadingRoles: "roles/isLoading",
     }),
   },
-  created() {
-
-  },
+  created() {},
 };
 </script>
 <style></style>

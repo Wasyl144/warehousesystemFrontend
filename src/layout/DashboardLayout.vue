@@ -16,20 +16,13 @@
 
         <sidebar-item
           :link="{
-            name: 'Icons',
-            icon: 'ni ni-planet text-blue',
-            path: '/icons',
-          }"
-        />
-        <sidebar-item
-          :link="{
             name: 'My Profile',
             icon: 'ni ni-single-02 text-yellow',
             path: '/profile',
           }"
         />
         <sidebar-item
-            v-if="can('items.index')"
+          v-if="can('items.index')"
           :link="{
             name: 'Items',
             icon: 'ni ni-collection text-red',
@@ -46,8 +39,8 @@
       </template>
       <template v-slot:managment>
         <sidebar-item
-            v-if="can('categories.index')"
-            :link="{
+          v-if="can('categories.index')"
+          :link="{
             name: 'Categories',
             icon: 'ni ni-tv-2 text-primary',
             path: '/categories',
@@ -55,7 +48,7 @@
         />
 
         <sidebar-item
-            v-if="can('role.index')"
+          v-if="can('role.index')"
           :link="{
             name: 'Roles',
             icon: 'ni ni-planet text-red',
@@ -63,8 +56,8 @@
           }"
         />
         <sidebar-item
-            v-if="can('user.index')"
-            :link="{
+          v-if="can('user.index')"
+          :link="{
             name: 'Users',
             icon: 'ni ni-user-run text-red',
             path: '/users',

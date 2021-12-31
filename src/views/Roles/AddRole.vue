@@ -1,14 +1,13 @@
 <template>
   <base-header
-      class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
-      style="
-        min-height: 300px;
-        /*background-image: url(img/theme/profile-cover.jpg);*/
-        background-size: cover;
-        background-position: center top;
-      "
+    class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
+    style="
+      min-height: 300px;
+      /*background-image: url(img/theme/profile-cover.jpg);*/
+      background-size: cover;
+      background-position: center top;
+    "
   >
-
   </base-header>
   <div class="container-fluid mt--7">
     <div class="row">
@@ -32,12 +31,12 @@
               <div class="row">
                 <div class="col-lg-12">
                   <base-input
-                      alternative=""
-                      label="Role name"
-                      placeholder="ex. Worker"
-                      input-classes="form-control-alternative"
-                      v-model="role.name"
-                      :error="role?.errors?.errors?.name"
+                    alternative=""
+                    label="Role name"
+                    placeholder="ex. Worker"
+                    input-classes="form-control-alternative"
+                    v-model="role.name"
+                    :error="role?.errors?.errors?.name"
                   />
                 </div>
               </div>
@@ -50,7 +49,7 @@
 </template>
 
 <script>
-import {mapActions, mapGetters} from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "AddRole",
@@ -65,10 +64,7 @@ export default {
       isLoading: "roles/isLoading",
     }),
   },
-
-}
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
