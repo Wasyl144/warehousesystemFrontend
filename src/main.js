@@ -39,6 +39,14 @@ if (localStorage.getItem("token")) {
 if (process.env.NODE_ENV === "development") {
     devtools.connect("localhost", 8098);
 }
+Axios.interceptors.response.use(response => {
+    return response;
+}, error => {
+    if (error.response.status === 401) {
+        store.dispatch('auth/logoutErase')
+    }
+    return error;
+});
 
 const appInstance = createApp(App);
 appInstance.use(router);

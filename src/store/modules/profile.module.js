@@ -23,9 +23,6 @@ export const profile = {
             commit("SET_LOADING", false);
           } else {
             dispatch("alerts/add_error", errors.data.message, { root: true });
-            if (errors.status === 401) {
-              dispatch("auth/logout", '',{ root: true });
-            }
             commit("getCurrentUserFailed", errors);
           }
         }
