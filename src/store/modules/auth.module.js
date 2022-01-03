@@ -1,14 +1,19 @@
 import AuthService from "../../services/auth/auth.service";
 import routes from "@/router";
+import axios from "axios";
 
-const user = localStorage.getItem("token");
-const initialState = user
-    ? {status: {loggedIn: true}, user}
-    : {status: {loggedIn: false}, user: null};
 
 export const auth = {
     namespaced: true,
-    state: initialState,
+    state: {
+        status: {
+          loggedIn: localStorage.getItem("token") !== null,
+        },
+        loading: false,
+        errors : {
+
+        }
+    },
     actions: {
         logoutErase({commit}) {
             commit("logout");
@@ -17,16 +22,18 @@ export const auth = {
             localStorage.removeItem("token");
         },
         login({commit, dispatch}, user) {
-            dispatch("profile/getPermissions");
+            commit("SET_LOADING", true);
             return AuthService.login(user).then(
-                (user) => {
-                    commit("loginSuccess", user);
-                    routes.push({name: "dashboard"});
-                    return Promise.resolve(user);
-                },
-                (error) => {
-                    commit("loginFail", user);
-                    return Promise.reject(error);
+                ({ success, response, errors }) => {
+                    if (success) {
+                        commit("loginSuccess", response);
+                        commit("SET_LOADING", false);
+                        dispatch("alerts/add_success", response.msg, { root: true });
+                    } else {
+                        dispatch("alerts/add_error", errors.message, { root: true });
+                        commit("SET_LOADING", false);
+                        commit("loginFail", errors);
+                    }
                 }
             );
         },
@@ -40,17 +47,28 @@ export const auth = {
         },
     },
     mutations: {
-        loginSuccess(state, user) {
-            state.status.loggedIn = true;
-            state.status.user = user;
+        SET_LOADING(state, status) {
+            state.loading = status;
         },
-        loginFail(state) {
+        loginSuccess(state, response) {
+            localStorage.setItem('token', response.token)
+            axios.defaults.headers["Authorization"] =
+                "Bearer " + localStorage.getItem("token");
+            state.status.loggedIn = true;
+            routes.push({name: "dashboard"});
+        },
+        loginFail(state, errors) {
             state.status.loggedIn = false;
-            state.status.user = null;
+            state.errors = errors.errors;
         },
         logout(state) {
             state.status.loggedIn = false;
-            state.user = null;
+            state.errors = {};
         },
     },
+    getters: {
+        isLoading: (state) => state.loading,
+        loggedIn: (state) => state.loggedIn,
+        errors: (state) => state.errors,
+    }
 };

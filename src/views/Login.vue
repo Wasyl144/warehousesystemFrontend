@@ -6,10 +6,10 @@
         <base-alert v-show="message" type="danger" dismissible>
           <span class="alert-inner--text">{{ message }}</span>
           <button
-            type="button"
-            class="close"
-            data-dismiss="alert"
-            aria-label="Close"
+              type="button"
+              class="close"
+              data-dismiss="alert"
+              aria-label="Close"
           >
             <span aria-hidden="true">&times;</span>
           </button>
@@ -20,34 +20,37 @@
           </div>
           <form role="form" @submit.prevent="loginHandler">
             <base-input
-              formClasses="input-group-alternative mb-3"
-              placeholder="Email"
-              addon-left-icon="ni ni-email-83"
-              v-model="user.email"
+                formClasses="input-group-alternative mb-3"
+                placeholder="Email"
+                :valid="errors?.email ? false : undefined"
+                addon-left-icon="ni ni-email-83"
+                v-model="user.email"
             >
             </base-input>
 
             <base-input
-              formClasses="input-group-alternative mb-3"
-              placeholder="Password"
-              type="password"
-              addon-left-icon="ni ni-lock-circle-open"
-              v-model="user.password"
+                formClasses="input-group-alternative mb-3"
+                placeholder="Password"
+                type="password"
+                :valid="errors?.password ? false : undefined"
+                addon-left-icon="ni ni-lock-circle-open"
+                v-model="user.password"
             >
             </base-input>
             <div class="text-center">
               <base-button
-                type="primary"
-                v-if="!loading"
-                nativeType="submit"
-                class="my-4"
-                >Sign in</base-button
+                  type="primary"
+                  v-if="!loading"
+                  nativeType="submit"
+                  class="my-4"
+              >Sign in
+              </base-button
               >
               <button v-else class="btn btn-primary" type="button" disabled>
                 <span
-                  class="spinner-border spinner-border-sm"
-                  role="status"
-                  aria-hidden="true"
+                    class="spinner-border spinner-border-sm"
+                    role="status"
+                    aria-hidden="true"
                 ></span>
                 <span class="sr-only">Loading...</span>
               </button>
@@ -60,22 +63,22 @@
 </template>
 <script>
 import AuthUser from "../models/authuser";
-import axios from "axios";
-import { mapActions } from "vuex";
+import {mapActions, mapGetters} from "vuex";
 
 export default {
   name: "login",
   data() {
     return {
       user: new AuthUser("", ""),
-      loading: false,
       message: "",
     };
   },
   computed: {
-    loggedIn() {
-      return this.$store.state.auth.status.loggedIn;
-    },
+    ...mapGetters({
+      loading: "auth/isLoading",
+      loggedIn: "auth/loggedIn",
+      errors: "auth/errors",
+    }),
   },
   created() {
     if (this.loggedIn) {
@@ -86,20 +89,14 @@ export default {
     ...mapActions({
       login: "auth/login",
     }),
-    async loginHandler() {
-      this.loading = true;
+    loginHandler() {
+      this.message = "";
       if (this.user.email && this.user.password) {
-        await this.login(this.user).then(
-          () => {
-            axios.defaults.headers["Authorization"] =
-              "Bearer " + localStorage.getItem("token");
-          },
-          (error) => {
-            this.message = error.response.data.message;
-          }
-        );
+        this.login(this.user)
       }
-      this.loading = false;
+      else {
+        this.message = "Fill a data"
+      }
     },
   },
 };
