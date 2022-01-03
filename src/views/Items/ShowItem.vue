@@ -49,7 +49,7 @@
                   </div>
                 </div>
                 <div class="col-md-9 col-lg-9">
-                  <div class="  ">
+                  <div class=" table-responsive ">
                     <table class="table table-user-information">
                       <tbody>
                         <tr>
